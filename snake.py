@@ -1,6 +1,7 @@
 # Importing libraries
 import curses
 from random import randint
+from pygame import mixer
 
 # Setup window
 curses.initscr()
@@ -10,6 +11,11 @@ curses.noecho()
 curses.curs_set(0)
 win.border(0)
 win.nodelay(1)
+
+# Background Music
+mixer.init()
+mixer.music.load("Music/Background.mp3")
+mixer.music.play()
 
 # Snake and Food
 snake = [(4, 10), (4, 9), (4, 8)]
@@ -22,7 +28,7 @@ ESC = 27
 key = curses.KEY_RIGHT
 
 while key != ESC:
-    win.addstr(0, 2, 'Score ' + str(score) + ' ')
+    win.addstr(0, 2, ' Score - ' + str(score) + ' ')
     win.timeout(150 - (len(snake)) // 5 + len(snake) // 10 % 120) # For increasing speed of snake
 
     prev_key = key
@@ -47,13 +53,18 @@ while key != ESC:
     snake.insert(0, (y, x))
 
     # Check if we hit the border
-    if y == 0: break
-    if y == 19: break
-    if x == 0: break
-    if x == 59: break
+    if y == 0:
+        break
+    if y == 19:
+        break
+    if x == 0: 
+        break
+    if x == 59: 
+        break
 
     # If snake runs over itself
-    if snake[0] in snake[1:]: break
+    if snake[0] in snake[1:]:
+        break
 
     if snake[0] == food:
         # Eat the food
